@@ -7,7 +7,9 @@ Puppet::Type.type(:gitrepo).provide(:gitrepo) do
     def create
         destroy
         system "git clone '#{resource[:source]}' '#{resource[:path]}'"
-        ownership; mode
+        if resource[:submodule]; submodule; end
+        ownership
+        mode
     end
 
     def destroy
@@ -18,6 +20,10 @@ Puppet::Type.type(:gitrepo).provide(:gitrepo) do
         if File.directory?(resource[:path] + "/.git")
             ownership; mode; return true
         end
+    end
+
+    def submodule
+        system "cd '#{resource[:path]}' && git submodule init && git submodule update"
     end
 
     def ownership

@@ -35,6 +35,15 @@ Puppet::Type.newtype(:gitrepo) do
         end
     end
 
+    newparam(:submodule) do
+        desc "Whether or not this GIT repo has submodules."
+        validate do |value|
+            unless !!value == value
+                raise ArgumentError, "%s is not a valid boolean value." % value
+            end
+        end
+    end
+
     newparam(:owner) do
         desc "The user/uid that owns the repository files."
     end

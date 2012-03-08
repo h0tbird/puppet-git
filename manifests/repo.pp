@@ -19,15 +19,17 @@
 define git::repo (
 
     $server, $user, $path,
-    $ensure = present,
-    $owner  = 'root',
-    $group  = 'root',
-    $mode   = '0664'
+    $ensure    = present,
+    $owner     = 'root',
+    $group     = 'root',
+    $mode      = '0664',
+    $submodule = false
 
 ) {
 
     # Validate parameters:
     validate_re($ensure, '^present$|^absent$')
+    validate_bool($submodule)
 
     # Include delegated git class:
     include git
@@ -36,12 +38,13 @@ define git::repo (
     $templates = getvar("${module_name}::params::templates")
 
     gitrepo { $name:
-        ensure  => $ensure,
-        owner   => $owner,
-        group   => $group,
-        mode    => $mode,
-        source  => "git://${server}/${user}/${name}.git",
-        path    => $path,
+        ensure    => $ensure,
+        owner     => $owner,
+        group     => $group,
+        mode      => $mode,
+        submodule => $submodule,
+        source    => "git://${server}/${user}/${name}.git",
+        path      => $path,
     }
 
     concat { "${path}/.git/config":
