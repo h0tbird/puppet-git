@@ -6,8 +6,7 @@ Puppet::Type.type(:gitrepo).provide(:gitrepo) do
 
     def create
         destroy
-        system "git clone '#{resource[:source]}' '#{resource[:path]}'"
-        if resource[:submodule]; submodule; end
+        clone
         ownership
         mode
     end
@@ -22,8 +21,12 @@ Puppet::Type.type(:gitrepo).provide(:gitrepo) do
         end
     end
 
-    def submodule
-        system "cd '#{resource[:path]}' && git submodule init && git submodule update"
+    def clone
+        if resource[:recursive]
+            system "git clone --recursive '#{resource[:source]}' '#{resource[:path]}'"
+        else
+            system "git clone '#{resource[:source]}' '#{resource[:path]}'"
+        end
     end
 
     def ownership
