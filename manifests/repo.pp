@@ -23,13 +23,13 @@ define git::repo (
     $owner     = 'root',
     $group     = 'root',
     $mode      = '0664',
-    $submodule = false
+    $recursive = false,
 
 ) {
 
     # Validate parameters:
     validate_re($ensure, '^present$|^absent$')
-    validate_bool($submodule)
+    validate_bool($recursive)
 
     # Include delegated git class:
     include git
@@ -42,7 +42,7 @@ define git::repo (
         owner     => $owner,
         group     => $group,
         mode      => $mode,
-        submodule => $submodule,
+        recursive => $recursive,
         source    => "git://${server}/${user}/${name}.git",
         path      => $path,
     }
