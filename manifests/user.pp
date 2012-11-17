@@ -19,11 +19,11 @@
 define git::user (
 
     $ensure   = present,
-    $home     = extlookup("user/${name}/home"),
-    $fullname = extlookup("user/${name}/name"),
-    $email    = extlookup("user/${name}/email"),
-    $editor   = extlookup("user/${name}/editor"),
-    $difftool = extlookup("user/${name}/difftool"),
+    $home     = undef,
+    $fullname = undef,
+    $email    = undef,
+    $editor   = undef,
+    $difftool = undef,
 
 ) {
 
